@@ -13,11 +13,19 @@ public class Main {
         System.out.println("Waiting for connection");
         Socket socket = serverSocket.accept();
         System.out.println("Client connected");
+
         PrintStream sout = new PrintStream(socket.getOutputStream());
         Scanner sin = new Scanner(socket.getInputStream());
+
+        Scanner in = new Scanner(System.in);
         sout.println("Hello, WHats you name?");
         String userName = sin.nextLine();
-        System.out.println(userName);
-        sout.println("Nice to meet you, " + userName);
+        sout.println("Hi, " + userName);
+        String input = sin.nextLine();
+        while (!input.equals("Bye")) {
+            System.out.println("[" + userName + "] " + input);
+            sout.println(in.nextLine());
+            input = sin.nextLine();
+        }
     }
 }
