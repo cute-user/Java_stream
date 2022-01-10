@@ -13,19 +13,32 @@ public class Main {
         System.out.println("Waiting for connection");
         Socket socket = serverSocket.accept();
         System.out.println("Client connected");
-
         PrintStream sout = new PrintStream(socket.getOutputStream());
         Scanner sin = new Scanner(socket.getInputStream());
 
-        Scanner in = new Scanner(System.in);
+        HostOutputThread hostOutputThread = new HostOutputThread(sout);
+        hostOutputThread.start();
+
         sout.println("Hello, WHats you name?");
         String userName = sin.nextLine();
         sout.println("Hi, " + userName);
         String input = sin.nextLine();
         while (!input.equals("Bye")) {
             System.out.println("[" + userName + "] " + input);
-            sout.println(in.nextLine());
             input = sin.nextLine();
+        }
+    }
+}
+
+class HostOutputThread extends Thread {
+    Scanner in = new Scanner(System.in);
+    PrintStream sout;
+    HostOutputThread(PrintStream sout) {
+        this.sout = sout;
+    }
+    public void run() {
+        while (true) {
+            sout.println(in.nextLine());
         }
     }
 }
