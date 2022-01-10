@@ -27,6 +27,7 @@ public class Main {
             System.out.println("[" + userName + "] " + input);
             input = sin.nextLine();
         }
+        hostOutputThread.interrupt();
     }
 }
 
@@ -37,8 +38,9 @@ class HostOutputThread extends Thread {
         this.sout = sout;
     }
     public void run() {
-        while (true) {
+        while (!interrupted()) {
             sout.println(in.nextLine());
         }
+        sout.println("See youn soon");
     }
 }
